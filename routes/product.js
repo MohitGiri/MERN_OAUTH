@@ -13,9 +13,10 @@ router.param("productId",getProductById);
 
 
 // Routes
+router.post("/product/create/:userId",isSignedIn,isAuthenticated,isAdmin,createProduct);
 
 // router.post("/product/create/:userId",isSignedIn,isAuthenticated,isAdmin,createProduct);
-router.post("/product/create/:userId",isAdmin,createProduct);
+//router.post("/product/create/:userId",isAdmin,createProduct);
 
 // READ
 
@@ -23,12 +24,12 @@ router.get("/product/:productId",getProduct)
 router.get("/product/photo/:productId",photo);
 
 // UPDATE
-//router.put("/product/:productId/:userId",isSignedIn,isAuthenticated,isAdmin,updateProduct)
-router.put("/product/:productId/:userId",isAdmin,updateProduct)
+router.put("/product/:productId/:userId",isSignedIn,isAuthenticated,isAdmin,updateProduct)
+//router.put("/product/:productId/:userId",isAdmin,updateProduct)
 
 // DELETE 
-// router.delete("/product/:productId/:userId",isSignedIn,isAuthenticated,isAdmin,deleteProduct)
-router.delete("/product/:productId/:userId",isAdmin,deleteProduct)
+ router.delete("/product/:productId/:userId",isSignedIn,isAuthenticated,isAdmin,deleteProduct)
+//router.delete("/product/:productId/:userId",isAdmin,deleteProduct)
 
 // Product List
 router.get("/products",getAllProducts)

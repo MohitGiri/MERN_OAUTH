@@ -9,15 +9,15 @@ router.param("userId",getUserById)
 
 //router.get("/user/:userId",isSignedIn,isAuthenticated,getUser)
 
-//router.get("/user/:userId",getUser)
+router.get("/user/:userId",getUser)
 
 
 router.get("/users",getAllUsers);
 
 //router.put("/user/:userId",)
 
-router.get("/orders/user/:userId",isSignedIn,isAuthenticated,userPurchaseList)
+//router.get("/orders/user/:userId",isSignedIn,isAuthenticated,userPurchaseList)
 
-//router.get("/orders/user/:userId",userPurchaseList)
+router.get("/orders/user/:userId",userPurchaseList)
 
 module.exports = router

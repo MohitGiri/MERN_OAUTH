@@ -18,21 +18,21 @@ router.param("orderId",getOrderById)
 // actual routes
 
 //CREATE 
-// router.post("/order/create/:userId",isSignedIn,isAuthenticated,
-// pushOrderInPurchaseList,
-// updateStockAndSold,
-// createOrder)
-router.post("/order/create/:userId",
+router.post("/order/create/:userId",isSignedIn,isAuthenticated,
 pushOrderInPurchaseList,
 updateStockAndSold,
 createOrder)
+// router.post("/order/create/:userId",
+// pushOrderInPurchaseList,
+// updateStockAndSold,
+// createOrder)
 
 
 
 // READ
 
-//router.get("/order/all/:userId",isSignedIn,isAuthenticated,isAdmin,getAllOrders)
-router.get("/order/all/:userId",isSignedIn,getAllOrders)
+router.get("/order/all/:userId",isSignedIn,isAuthenticated,isAdmin,getAllOrders)
+//router.get("/order/all/:userId",isSignedIn,getAllOrders)
 
 // Order status
 

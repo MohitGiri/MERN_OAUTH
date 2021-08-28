@@ -49,8 +49,8 @@ passport.use(
                     username: profile.username,
                     googleId : profile.id,
                     //provider: 'facebook',
-                    role: 1,
-                    secret : accessToken
+                    //role: 1,
+                    //secret : accessToken
                     //now in the future searching on User.findOne({'facebook.id': profile.id } will match because of this next line
                     //facebook: profile._json
                 });

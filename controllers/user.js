@@ -57,7 +57,7 @@ exports.pushOrderInPurchaseList = (req,res,next)=>{
             name : prod.name,
             description : prod.description,
             category : prod.category,
-            quantity : prod.quantity,
+            quantity : prod.count,
             amount : req.body.order.amount,
             transaction_id : req.body.order.transaction_id 
         })
@@ -65,7 +65,7 @@ exports.pushOrderInPurchaseList = (req,res,next)=>{
     
     User.findOneAndUpdate(
         
-               {_id : req.body._id},
+               {_id : req.profile._id},
                {$push : {purchases : purchases}},
                {new : true},
                (err,purchases) => {

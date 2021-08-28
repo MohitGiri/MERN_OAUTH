@@ -66,7 +66,7 @@ passport.use(
                 });
             } else {
                 //found user. Return
-               accesstoken = accessToken;
+              // accesstoken = accessToken;
                 
                 return done(err, user);
             }
@@ -77,22 +77,50 @@ passport.use(
 
 
 
-// AUTHENTICATION USING JWT
+// AUTHENTICATION USING JWT For Admin
 
 
 
 
 const JWT_SECRET ="sshhhh"
 
+// Signup for Admin
 exports.signup = (req,res)=>{
    
+    // User.findById({_id : '101366167747138013001'},(err,user)=>{
+    //     if(err){ 
+    //        return res.status(400).json({
+    //         error : "User id is not present in database"
+    //         })
+    //  }
+    //   user.encry_passowrd = req.body.password;
+    //   user.save((err,user)=>{
+    //     if(err){ 
+    //         console.log(err)
+    //         return res.status(400).json({
+    //         err : "User is not saved in database"
+    //     }) 
+    // }
+    //  res.json(user);
+    //   res.json({
+    //       name : user.name,
+    //       email: user.email,
+    //       id : user._id
+    //   })
+     
+    // })
+    // })
+
     const user = new User(req.body)
+    //user._id  = myprofile.id;
     user.save((err,user)=>{
-        if(err){ return res.status(400).json({
+        if(err){ 
+            console.log(err)
+            return res.status(400).json({
             err : "User is not saved in database"
         }) 
     }
-     //res.json(user);
+     res.json(user);
       res.json({
           name : user.name,
           email: user.email,
@@ -104,13 +132,12 @@ exports.signup = (req,res)=>{
 exports.signin = (req,res)=>{
    // const {email,password} = req.body;
       
-    User.findOne({'email': myprofile.emails[0].value},(err,user)=>{
+    User.findOne({'_id': myprofile.id},(err,user)=>{
         if(err || !user){ 
            return res.status(400).json({
             error : "User email is not present in database"
             })
      }
-     
      
     //  if(!user.authenticate(password)){
     //     return res.status(400).json({
@@ -119,19 +146,29 @@ exports.signin = (req,res)=>{
     //  }
     
      // Save Token
-     var token = accesstoken
+    //  var token = accesstoken
      
-     res.cookie("token",token,{expire : new Date() + 999}); 
+    //  res.cookie("token",token,{expire : new Date() + 999}); 
         
-     const {googleId,name,email,role} =user;
+    //  const {googleId,name,email,role} =user;
      
-     return res.json({token,user : {googleId,name,email,role}})
+    //  return res.json({token,user : {googleId,name,email,role}})
+    const token = jwt.sign({_id : user._id},JWT_SECRET)
+     
+    res.cookie("token",token,{expire : new Date() + 999}); 
+       
+    const {_id,name,email,role} =user;
+    
+    return res.json({token,user : {_id,name,email,role}})
+
+
+
     })
 }
 
 
 
-// exports.signin = (req,res)=>{
+// exports.signinAdmin = (req,res)=>{
 //     const {email,password} = req.body;
       
 //     User.findOne({email},(err,user)=>{
@@ -141,7 +178,7 @@ exports.signin = (req,res)=>{
 //             })
 //      }
      
-//      if(!user.authenticate(password)){
+//      if(!user.authenticates(password)){
 //         return res.status(400).json({
 //              error : "Email and password do not match"
 //          })
@@ -172,18 +209,18 @@ exports.signout = (req,res)=>{
 }
 
 // protected routes
-// exports.isSignedIn = expressJwt({
-//      secret: JWT_SECRET,
-//      algorithms: ['HS256'],
-//      userProperty : "auth" 
-//     // setting properties in user browser using cookies     
-// });
-
-
-exports.isSignedIn = cookieSession({
-    maxAge: 24 * 60 * 60 * 1000,
-    keys: [keys.session.cookieKey]
+exports.isSignedIn = expressJwt({
+     secret: JWT_SECRET,
+     algorithms: ['HS256'],
+     userProperty : "auth" 
+    // setting properties in user browser using cookies     
 });
+
+
+// exports.isSignedIn = cookieSession({
+//     maxAge: 24 * 60 * 60 * 1000,
+//     keys: [keys.session.cookieKey]
+// });
 
 
 // custom middlewares
@@ -196,6 +233,16 @@ exports.isAuthenticated = (req,res,next)=>{
     }
     next();
 }
+
+// exports.isAuthenticated = (req,res,next)=>{
+//     let permission = req.profile && req.profile._id == myprofile._id;
+//     if(!permission){
+//       return res.status(403).json({
+//           error : "ACCESS DENIED"
+//       })
+//     }
+//     next();
+// }
 
 exports.isAdmin = (req,res,next)=>{
     if(req.profile.role === 0) return res.status(403).json({

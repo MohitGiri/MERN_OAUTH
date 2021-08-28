@@ -32,10 +32,10 @@ var userSchema = new mongoose.Schema({
         type : String,
         trim : true
     },
-    // encry_password : {
-    //     type : String,
-    //     required : true 
-    // },
+    encry_password : {
+        type : String,
+       // required : true 
+    },
     salt : String,
     role : {
         type : Number,
@@ -59,7 +59,7 @@ userSchema.virtual("password")
 
 userSchema.methods = {
     
-    authenticate : function(plainpassword){
+    authenticates : function(plainpassword){
         return this.securePassword(plainpassword) === this.encry_password
     },
     securePassword : function (plainpassword){
